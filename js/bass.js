@@ -1,3 +1,10 @@
+/**
+ * Features:
+ * - choose a random note and ask the user to place it on the board (training mode)
+ * - count the time the user needs to place the note and save it
+ * - for each note, log which position the user knows the most
+ * - see the full fretboard in romance and english system (learning mode)
+ */
 (function() {
 	var chords, systems, positions, difficulties;
 
