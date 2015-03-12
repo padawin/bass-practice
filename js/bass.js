@@ -17,7 +17,8 @@
 
 	systems = {
 		english: [0, 11],
-		romance: [12, 23]
+		romance: [12, 23],
+		all: [0, 23]
 	};
 
 	positions = [
