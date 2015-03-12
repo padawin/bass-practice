@@ -4,6 +4,14 @@
 		<meta charset="UTF-8">
 		<title>Bass practice</title>
 		<link rel="stylesheet" href="css/bass.css">
+		<script type="text/javascript" src="http://padawin.github.io/Butterfly-js/js/Butterfly.js"></script>
+		<script type="text/javascript" src="js/bass.js"></script>
+		<script type="text/javascript">
+			B.addEvent(window, 'load', function() {
+				var b = new BassPractice(B.$id('board'), BassPractice.modes.ENGLISH);
+				b.start(10);
+			});
+		</script>
 	</head>
 	<body>
 		<table id="board">
