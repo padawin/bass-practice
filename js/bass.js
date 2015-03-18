@@ -43,8 +43,8 @@ angular.module('bassPracticeApp', [])
 			mode: ModesFactory.modes.available.PRACTICE
 		};
 
-		this.start = function() {
-			console.log(this.mode, 'start');
+		this.selectMode = function() {
+			ModesFactory.setSelected(this.mode.mode);
 		};
 	}
 
