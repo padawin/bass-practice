@@ -1,10 +1,52 @@
 angular.module('bassPracticeApp', [])
 
-.directive('modeSelection', function() {
+.factory('ModesFactory', function () {
+	var modesFactory = {
+		modes: {
+			available: {
+				LEARNING: 'learning',
+				PRACTICE: 'practice'
+			},
+			selected: null
+		}
+	};
+	return modesFactory;
+})
+
+.directive('bassPracticePage', function() {
+	function PageController(ModesFactory) {
+		this.availableModes = ModesFactory.modes.available;
+		this.mode = ModesFactory.modes.selected;
+	}
+
 	return {
 		restrict: 'E',
 		replace: true,
 		scope: true,
-		templateUrl: 'templates/modeSelection.html'
+		templateUrl: 'templates/bassPracticePage.html',
+		controllerAs: 'pageController',
+		controller: PageController
 	};
 })
+
+.directive('modeSelection', function() {
+	function ModeController(ModesFactory) {
+		this.availableModes = ModesFactory.modes.available;
+		this.mode = {
+			mode: ModesFactory.modes.available.PRACTICE
+		};
+
+		this.start = function() {
+			console.log(this.mode, 'start');
+		};
+	}
+
+	return {
+		restrict: 'E',
+		replace: true,
+		scope: true,
+		templateUrl: 'templates/modeSelection.html',
+		controllerAs: 'modeController',
+		controller: ModeController
+	};
+});
