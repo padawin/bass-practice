@@ -8,6 +8,10 @@ angular.module('bassPracticeApp', [])
 				PRACTICE: 'practice'
 			},
 			selected: null
+		},
+
+		setSelected: function(mode) {
+			modesFactory.modes.selected = mode;
 		}
 	};
 	return modesFactory;
