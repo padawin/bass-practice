@@ -20,7 +20,6 @@ angular.module('bassPracticeApp', [])
 .directive('bassPracticePage', function() {
 	function PageController(ModesFactory) {
 		this.availableModes = ModesFactory.modes.available;
-		this.mode = ModesFactory.modes.selected;
 
 		this.checkMode = function(against) {
 			return ModesFactory.modes.selected == against;
