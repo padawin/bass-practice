@@ -39,6 +39,8 @@ angular.module('bassPracticeApp', [])
 .directive('modeSelection', function() {
 	function ModeController(ModesFactory) {
 		this.availableModes = ModesFactory.modes.available;
+
+		// There may be other options later, such as tuning, number of strings...
 		this.mode = {
 			mode: ModesFactory.modes.available.PRACTICE
 		};
