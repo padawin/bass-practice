@@ -222,6 +222,17 @@ angular.module('bassPracticeApp', [])
 		scope: true,
 		templateUrl: 'templates/modeLearning.html'
 	};
+})
+
+.directive('board', function() {
+	return {
+		restrict: 'E',
+		replace: true,
+		scope: {
+			controller: '='
+		},
+		templateUrl: 'templates/board.html'
+	};
 });
 /**********************************************************************/
 /** END DIRECTIVES                                                   **/
