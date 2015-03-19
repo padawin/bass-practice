@@ -12,7 +12,7 @@
 		<tbody>
 			<tr data-ng-repeat="strings in practiceController.chordsTuning">
 				<th>{{strings.tuning}}</th>
-				<td data-ng-repeat="chord in strings.chords track by $index"><span data-ng-if="$index == 0">{{fret}}</span></td>
+				<td data-ng-repeat="chord in strings.chords track by $index"></td>
 			</tr>
 		</tbody>
 	</table>
