@@ -239,7 +239,8 @@ angular.module('bassPracticeApp', [])
 		restrict: 'E',
 		replace: true,
 		scope: {
-			controller: '='
+			controller: '=',
+			displayChords: '='
 		},
 		templateUrl: 'templates/board.html'
 	};
