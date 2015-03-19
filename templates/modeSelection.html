@@ -14,7 +14,7 @@
 	<ul>
 		<li data-ng-repeat="system in modeController.availableSystems">
 			<input type="radio" data-ng-model="modeController.mode.system" name="system" id="system-{{system.id}}" value="{{system.id}}" />
-			<label for="mode-{{system.id}}">{{system.label}}</label>
+			<label for="system-{{system.id}}">{{system.label}}</label>
 		</li>
 	</ul>
 	<input type="submit" value="start" data-ng-click="modeController.selectMode(modeController.mode.mode)" />
