@@ -61,6 +61,29 @@ angular.module('bassPracticeApp', [])
 		getSelected: function() {
 			return systems.selected;
 		},
+
+		getChords: function(tuning, system) {
+			var returnedChords = {},
+				chord,
+				c;
+
+			for (c = 0; c <= fretsNumber; c++) {
+				if (system == systems.systems.english.id || system == systems.systems.romance.id) {
+					chord = chords[(tuning + c) % fretsNumber + systems.systems[system].chordsRange[0]];
+				}
+				else if (system == systems.systems.all.id) {
+					chord = chords[(tuning + c) % fretsNumber + systems.systems.english.chordsRange[0]]
+						+ ' / ' + chords[(tuning + c) % fretsNumber + systems.systems.romance.chordsRange[0]]
+				}
+
+				if (c == 0) {
+					returnedChords.tuning = chord;
+					returnedChords.chords = [];
+				}
+				returnedChords.chords.push(chord);
+			}
+
+			return returnedChords;
 		}
 	};
 
