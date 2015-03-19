@@ -56,6 +56,11 @@ angular.module('bassPracticeApp', [])
 
 		setSelected: function(s) {
 			systems.selected = s;
+		},
+
+		getSelected: function() {
+			return systems.selected;
+		},
 		}
 	};
 
