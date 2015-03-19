@@ -1,5 +1,15 @@
 angular.module('bassPracticeApp', [])
 
+/**********************************************************************/
+/** FACTORIES                                                        **/
+/**********************************************************************/
+/**
+ * Factory to work with modes.
+ * The available modes are:
+ * - Learning: To see a fret board and learn the chords.
+ * - Practice: The fret board is empty and the user is prompted notes
+ * 		must place them on the board.
+ */
 .factory('ModesFactory', function () {
 	var modesFactory = {
 		modes: {
@@ -17,6 +27,11 @@ angular.module('bassPracticeApp', [])
 	return modesFactory;
 })
 
+/**
+ * Factory to work with notes systems.
+ * The systems are English (C, C#, D, D#, E, F, F#, G, G#, A, A#, B),
+ * Romance (Do Ré Mi Fa Sol La Si) and All (both previous combined).
+ */
 .factory('SystemsFactory', function() {
 	var systems;
 
@@ -52,6 +67,12 @@ angular.module('bassPracticeApp', [])
 	return systems;
 })
 
+/**
+ * Factory to manage the fret board.
+ * The factory can provide the existing chords, the base tuning and
+ * from a system and a tuning, returns the list of chords for each fret
+ * of the tuning.
+ */
 .factory('FretBoardFactory', function(SystemsFactory) {
 	var chords, fretsNumber, stringsNumber, maxStringsNumber, chordsBaseTuning, fretBoard;
 
@@ -102,7 +123,17 @@ angular.module('bassPracticeApp', [])
 
 	return fretBoard;
 })
+/**********************************************************************/
+/** END FACTORIES                                                    **/
+/**********************************************************************/
 
+/**********************************************************************/
+/** DIRECTIVES                                                       **/
+/**********************************************************************/
+/**
+ * Main directive of the page, loads the menu and displays the different
+ * modes according the choices in the menu.
+ */
 .directive('bassPracticePage', function() {
 	function PageController(ModesFactory) {
 		this.availableModes = ModesFactory.modes.available;
@@ -122,12 +153,16 @@ angular.module('bassPracticeApp', [])
 	};
 })
 
+/**
+ * Directive for the menu to choose the mode and system
+ */
 .directive('modeSelection', function() {
 	function ModeController(ModesFactory, SystemsFactory) {
 		this.availableModes = ModesFactory.modes.available;
 		this.availableSystems = SystemsFactory.systems;
 
-		// There may be other options later, such as tuning, number of strings...
+		// There may be other options later, such as tuning, number of
+		// strings...
 		this.mode = {
 			mode: ModesFactory.modes.available.PRACTICE,
 			system: SystemsFactory.systems.english.id
@@ -149,6 +184,10 @@ angular.module('bassPracticeApp', [])
 	};
 })
 
+/**
+ * Directive to display the practice mode, where the fret board is
+ * interactive.
+ */
 .directive('modePractice', function() {
 	function PracticeController(SystemsFactory, FretBoardFactory) {
 		var system = SystemsFactory.getSelected(),
@@ -172,6 +211,10 @@ angular.module('bassPracticeApp', [])
 	};
 })
 
+/**
+ * Directive to display the learning mode, where the fret board is not
+ * interactive, with all then notes displayed.
+ */
 .directive('modeLearning', function() {
 	return {
 		restrict: 'E',
@@ -180,3 +223,6 @@ angular.module('bassPracticeApp', [])
 		templateUrl: 'templates/modeLearning.html'
 	};
 });
+/**********************************************************************/
+/** END DIRECTIVES                                                   **/
+/**********************************************************************/
