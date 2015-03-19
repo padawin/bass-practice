@@ -137,11 +137,24 @@ angular.module('bassPracticeApp', [])
 })
 
 .directive('modePractice', function() {
+	function PracticeController(SystemsFactory) {
+		var system = SystemsFactory.getSelected(),
+			chordTuning,
+			chord;
+		this.chordsTuning = [];
+		for (chordTuning in SystemsFactory.baseTuning) {
+			chord = SystemsFactory.baseTuning[chordTuning];
+			this.chordsTuning.push(SystemsFactory.getChords(chord, system));
+		}
+	}
+
 	return {
 		restrict: 'E',
 		replace: true,
 		scope: true,
-		templateUrl: 'templates/modePractice.html'
+		templateUrl: 'templates/modePractice.html',
+		controllerAs: 'practiceController',
+		controller: PracticeController
 	};
 })
 
