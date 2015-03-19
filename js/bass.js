@@ -140,6 +140,10 @@ angular.module('bassPracticeApp', [])
 		chordTuning = FretBoardFactory.baseTuning[chordTuningIndex];
 		this.chordsTuning.push(FretBoardFactory.getChords(system, chordTuning));
 	}
+
+	this.click = function(chord) {
+		console.log(chord);
+	};
 })
 /**********************************************************************/
 /** END CONTROLLERS                                                  **/

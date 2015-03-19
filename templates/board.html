@@ -11,7 +11,9 @@
 	<tbody>
 		<tr data-ng-repeat="strings in controller.chordsTuning">
 			<th>{{strings.tuning}}</th>
-			<td data-ng-repeat="chord in strings.chords track by $index">
+			<td data-ng-repeat="chord in strings.chords track by $index"
+				data-ng-click="controller.click(chord)"
+			>
 				<span data-ng-if="displayChords">{{chord}}</span>
 			</td>
 		</tr>
