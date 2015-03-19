@@ -32,17 +32,17 @@ angular.module('bassPracticeApp', [])
 			english: {
 				chordsRange: [0, 11],
 				label: 'English',
-				id: 1
+				id: 'english'
 			},
 			romance: {
 				chordsRange: [12, 23],
 				label: 'Romance',
-				id: 2
+				id: 'romance'
 			},
 			all: {
 				chordsRange: [0, 23],
 				label: 'All',
-				id: 3
+				id: 'all'
 			}
 		},
 		chords: chords,
