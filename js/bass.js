@@ -18,19 +18,7 @@ angular.module('bassPracticeApp', [])
 })
 
 .factory('SystemsFactory', function() {
-	var chords, fretsNumber, stringsNumber, maxStringsNumber, chordsBaseTuning, systems;
-
-	chords = [
-		// English
-		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
-		// Romance
-		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
-	];
-
-	chordsBaseTuning = [4, 11, 7, 2, 9, 4];
-	fretsNumber = 12;
-	stringsNumber = 4;
-	maxStringsNumber = 4;
+	var systems;
 
 	systems = {
 		systems: {
@@ -50,8 +38,6 @@ angular.module('bassPracticeApp', [])
 				id: 'all'
 			}
 		},
-		chords: chords,
-		baseTuning: chordsBaseTuning,
 		selected: null,
 
 		setSelected: function(s) {
@@ -61,19 +47,46 @@ angular.module('bassPracticeApp', [])
 		getSelected: function() {
 			return systems.selected;
 		},
+	};
 
-		getChords: function(tuning, system) {
+	return systems;
+})
+
+.factory('FretBoardFactory', function(SystemsFactory) {
+	var chords, fretsNumber, stringsNumber, maxStringsNumber, chordsBaseTuning, fretBoard;
+
+	chords = [
+		// English
+		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+		// Romance
+		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
+	];
+
+	chordsBaseTuning = [4, 11, 7, 2, 9, 4];
+	fretsNumber = 12;
+	stringsNumber = 4;
+	maxStringsNumber = 4;
+
+	function getChord(tuning, fret, system) {
+		return chords[(tuning + fret) % fretsNumber + SystemsFactory.systems[system].chordsRange[0]];
+	}
+
+	fretBoard = {
+		chords: chords,
+		baseTuning: chordsBaseTuning,
+
+		getChords: function(system, tuning) {
 			var returnedChords = {},
 				chord,
 				c;
 
 			for (c = 0; c <= fretsNumber; c++) {
-				if (system == systems.systems.english.id || system == systems.systems.romance.id) {
-					chord = chords[(tuning + c) % fretsNumber + systems.systems[system].chordsRange[0]];
+				if (system == SystemsFactory.systems.english.id || system == SystemsFactory.systems.romance.id) {
+					chord = getChord(tuning, c, system);
 				}
-				else if (system == systems.systems.all.id) {
-					chord = chords[(tuning + c) % fretsNumber + systems.systems.english.chordsRange[0]]
-						+ ' / ' + chords[(tuning + c) % fretsNumber + systems.systems.romance.chordsRange[0]]
+				else if (system == SystemsFactory.systems.all.id) {
+					chord = getChord(tuning, c, 'english')
+						+ ' / ' + getChord(tuning, c, 'romance')
 				}
 
 				if (c == 0) {
@@ -83,11 +96,12 @@ angular.module('bassPracticeApp', [])
 				returnedChords.chords.push(chord);
 			}
 
+console.log(returnedChords);
 			return returnedChords;
 		}
 	};
 
-	return systems;
+	return fretBoard;
 })
 
 .directive('bassPracticePage', function() {
@@ -137,14 +151,15 @@ angular.module('bassPracticeApp', [])
 })
 
 .directive('modePractice', function() {
-	function PracticeController(SystemsFactory) {
+	function PracticeController(SystemsFactory, FretBoardFactory) {
 		var system = SystemsFactory.getSelected(),
+			chordTuningIndex,
 			chordTuning,
 			chord;
 		this.chordsTuning = [];
-		for (chordTuning in SystemsFactory.baseTuning) {
-			chord = SystemsFactory.baseTuning[chordTuning];
-			this.chordsTuning.push(SystemsFactory.getChords(chord, system));
+		for (chordTuningIndex in FretBoardFactory.baseTuning) {
+			chordTuning = FretBoardFactory.baseTuning[chordTuningIndex];
+			this.chordsTuning.push(FretBoardFactory.getChords(system, chordTuning));
 		}
 	}
 
