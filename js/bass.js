@@ -230,11 +230,18 @@ angular.module('bassPracticeApp', [])
  * interactive, with all then notes displayed.
  */
 .directive('modeLearning', function() {
+	function LearningController($controller) {
+		angular.extend(this, $controller('BoardController', {}));
+		this.click = function() {};
+	}
+
 	return {
 		restrict: 'E',
 		replace: true,
 		scope: true,
-		templateUrl: 'templates/modeLearning.html'
+		templateUrl: 'templates/modeLearning.html',
+		controllerAs: 'learningController',
+		controller: LearningController
 	};
 })
 
