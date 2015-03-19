@@ -161,7 +161,8 @@ angular.module('bassPracticeApp', [])
 		this.availableModes = ModesFactory.modes.available;
 		this.availableSystems = SystemsFactory.systems;
 
-		// There may be other options later, such as tuning, number of strings...
+		// There may be other options later, such as tuning, number of
+		// strings...
 		this.mode = {
 			mode: ModesFactory.modes.available.PRACTICE,
 			system: SystemsFactory.systems.english.id
