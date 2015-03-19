@@ -17,6 +17,45 @@ angular.module('bassPracticeApp', [])
 	return modesFactory;
 })
 
+.factory('SystemsFactory', function() {
+	var chords, systems;
+
+	chords = [
+		// English
+		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+		// Romance
+		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
+	];
+
+	systems = {
+		systems: {
+			english: {
+				chordsRange: [0, 11],
+				label: 'English',
+				id: 1
+			},
+			romance: {
+				chordsRange: [12, 23],
+				label: 'Romance',
+				id: 2
+			},
+			all: {
+				chordsRange: [0, 23],
+				label: 'All',
+				id: 3
+			}
+		},
+		chords: chords,
+		selected: null,
+
+		setSelected: function(s) {
+			systems.selected = s;
+		}
+	};
+
+	return systems;
+})
+
 .directive('bassPracticePage', function() {
 	function PageController(ModesFactory) {
 		this.availableModes = ModesFactory.modes.available;
@@ -37,16 +76,19 @@ angular.module('bassPracticeApp', [])
 })
 
 .directive('modeSelection', function() {
-	function ModeController(ModesFactory) {
+	function ModeController(ModesFactory, SystemsFactory) {
 		this.availableModes = ModesFactory.modes.available;
+		this.availableSystems = SystemsFactory.systems;
 
 		// There may be other options later, such as tuning, number of strings...
 		this.mode = {
-			mode: ModesFactory.modes.available.PRACTICE
+			mode: ModesFactory.modes.available.PRACTICE,
+			system: SystemsFactory.systems.english.id
 		};
 
 		this.selectMode = function() {
 			ModesFactory.setSelected(this.mode.mode);
+			SystemsFactory.setSelected(this.mode.system);
 		};
 	}
 
