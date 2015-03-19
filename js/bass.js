@@ -18,7 +18,7 @@ angular.module('bassPracticeApp', [])
 })
 
 .factory('SystemsFactory', function() {
-	var chords, systems;
+	var chords, fretsNumber, stringsNumber, maxStringsNumber, chordsBaseTuning, systems;
 
 	chords = [
 		// English
@@ -26,6 +26,11 @@ angular.module('bassPracticeApp', [])
 		// Romance
 		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
 	];
+
+	chordsBaseTuning = [4, 11, 7, 2, 9, 4];
+	fretsNumber = 12;
+	stringsNumber = 4;
+	maxStringsNumber = 4;
 
 	systems = {
 		systems: {
@@ -46,6 +51,7 @@ angular.module('bassPracticeApp', [])
 			}
 		},
 		chords: chords,
+		baseTuning: chordsBaseTuning,
 		selected: null,
 
 		setSelected: function(s) {
