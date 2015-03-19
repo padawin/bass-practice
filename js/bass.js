@@ -96,7 +96,6 @@ angular.module('bassPracticeApp', [])
 				returnedChords.chords.push(chord);
 			}
 
-console.log(returnedChords);
 			return returnedChords;
 		}
 	};
