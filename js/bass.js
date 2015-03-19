@@ -58,4 +58,22 @@ angular.module('bassPracticeApp', [])
 		controllerAs: 'modeController',
 		controller: ModeController
 	};
+})
+
+.directive('modePractice', function() {
+	return {
+		restrict: 'E',
+		replace: true,
+		scope: true,
+		templateUrl: 'templates/modePractice.html'
+	};
+})
+
+.directive('modeLearning', function() {
+	return {
+		restrict: 'E',
+		replace: true,
+		scope: true,
+		templateUrl: 'templates/modeLearning.html'
+	};
 });
