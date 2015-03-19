@@ -128,6 +128,24 @@ angular.module('bassPracticeApp', [])
 /**********************************************************************/
 
 /**********************************************************************/
+/** CONTROLLERS                                                      **/
+/**********************************************************************/
+.controller('BoardController', function(SystemsFactory, FretBoardFactory) {
+	var system = SystemsFactory.getSelected(),
+		chordTuningIndex,
+		chordTuning,
+		chord;
+	this.chordsTuning = [];
+	for (chordTuningIndex in FretBoardFactory.baseTuning) {
+		chordTuning = FretBoardFactory.baseTuning[chordTuningIndex];
+		this.chordsTuning.push(FretBoardFactory.getChords(system, chordTuning));
+	}
+})
+/**********************************************************************/
+/** END CONTROLLERS                                                  **/
+/**********************************************************************/
+
+/**********************************************************************/
 /** DIRECTIVES                                                       **/
 /**********************************************************************/
 /**
@@ -189,16 +207,8 @@ angular.module('bassPracticeApp', [])
  * interactive.
  */
 .directive('modePractice', function() {
-	function PracticeController(SystemsFactory, FretBoardFactory) {
-		var system = SystemsFactory.getSelected(),
-			chordTuningIndex,
-			chordTuning,
-			chord;
-		this.chordsTuning = [];
-		for (chordTuningIndex in FretBoardFactory.baseTuning) {
-			chordTuning = FretBoardFactory.baseTuning[chordTuningIndex];
-			this.chordsTuning.push(FretBoardFactory.getChords(system, chordTuning));
-		}
+	function PracticeController($controller) {
+		angular.extend(this, $controller('BoardController', {}));
 	}
 
 	return {
