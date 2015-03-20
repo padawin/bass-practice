@@ -88,7 +88,7 @@ angular.module('bassPracticeApp', [])
 	stringsNumber = 4;
 	maxStringsNumber = 4;
 
-	function getChord(tuning, fret, system) {
+	function _getChord(tuning, fret, system) {
 		return chords[(tuning + fret) % fretsNumber + SystemsFactory.systems[system].chordsRange[0]];
 	}
 
@@ -103,11 +103,11 @@ angular.module('bassPracticeApp', [])
 
 			for (c = 0; c <= fretsNumber; c++) {
 				if (system == SystemsFactory.systems.english.id || system == SystemsFactory.systems.romance.id) {
-					chord = getChord(tuning, c, system);
+					chord = _getChord(tuning, c, system);
 				}
 				else if (system == SystemsFactory.systems.all.id) {
-					chord = getChord(tuning, c, 'english')
-						+ ' / ' + getChord(tuning, c, 'romance')
+					chord = _getChord(tuning, c, 'english')
+						+ ' / ' + _getChord(tuning, c, 'romance')
 				}
 
 				if (c == 0) {
