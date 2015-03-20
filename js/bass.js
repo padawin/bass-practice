@@ -141,8 +141,8 @@ angular.module('bassPracticeApp', [])
 		this.chordsTuning.push(FretBoardFactory.getChords(system, chordTuning));
 	}
 
-	this.click = function(chord) {
-		console.log(chord);
+	this.click = function(string, fret) {
+		console.log(string, fret);
 	};
 })
 /**********************************************************************/
