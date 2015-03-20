@@ -92,33 +92,35 @@ angular.module('bassPracticeApp', [])
 		return chords[(tuning + fret) % fretsNumber + SystemsFactory.systems[system].chordsRange[0]];
 	}
 
+	function getChords(system, tuning) {
+		var returnedChords = {},
+			chord,
+			c;
+
+		for (c = 0; c <= fretsNumber; c++) {
+			if (system == SystemsFactory.systems.english.id || system == SystemsFactory.systems.romance.id) {
+				chord = _getChord(tuning, c, system);
+			}
+			else if (system == SystemsFactory.systems.all.id) {
+				chord = _getChord(tuning, c, 'english')
+					+ ' / ' + _getChord(tuning, c, 'romance')
+			}
+
+			if (c == 0) {
+				returnedChords.tuning = chord;
+				returnedChords.chords = [];
+			}
+			returnedChords.chords.push(chord);
+		}
+
+		return returnedChords;
+	}
+
 	fretBoard = {
 		chords: chords,
 		baseTuning: chordsBaseTuning,
 
-		getChords: function(system, tuning) {
-			var returnedChords = {},
-				chord,
-				c;
-
-			for (c = 0; c <= fretsNumber; c++) {
-				if (system == SystemsFactory.systems.english.id || system == SystemsFactory.systems.romance.id) {
-					chord = _getChord(tuning, c, system);
-				}
-				else if (system == SystemsFactory.systems.all.id) {
-					chord = _getChord(tuning, c, 'english')
-						+ ' / ' + _getChord(tuning, c, 'romance')
-				}
-
-				if (c == 0) {
-					returnedChords.tuning = chord;
-					returnedChords.chords = [];
-				}
-				returnedChords.chords.push(chord);
-			}
-
-			return returnedChords;
-		}
+		getChords: getChords
 	};
 
 	return fretBoard;
