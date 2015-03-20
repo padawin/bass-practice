@@ -10,7 +10,7 @@ angular.module('bassPracticeApp', [])
  * - Practice: The fret board is empty and the user is prompted notes
  * 		must place them on the board.
  */
-.factory('ModesFactory', function () {
+.factory('ModesFactory', function() {
 	var modesFactory = {
 		modes: {
 			available: {
