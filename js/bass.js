@@ -92,7 +92,7 @@ angular.module('bassPracticeApp', [])
 		return chords[(tuning + fret) % fretsNumber + SystemsFactory.systems[system].chordsRange[0]];
 	}
 
-	function getChords(system, tuning) {
+	function _getChords(system, tuning) {
 		var returnedChords = {},
 			chord,
 			c;
@@ -122,11 +122,23 @@ angular.module('bassPracticeApp', [])
 		return returnedChords;
 	}
 
+	function getBoard(system) {
+		var board, chordTuning, chordTuningIndex;
+
+		board = [];
+		for (chordTuningIndex in chordsBaseTuning) {
+			chordTuning = chordsBaseTuning[chordTuningIndex];
+			board.push(_getChords(system, chordTuning));
+		}
+
+		return board;
+	}
+
 	fretBoard = {
 		chords: chords,
 		baseTuning: chordsBaseTuning,
 
-		getChords: getChords
+		getBoard: getBoard
 	};
 
 	return fretBoard;
@@ -139,15 +151,9 @@ angular.module('bassPracticeApp', [])
 /** CONTROLLERS                                                      **/
 /**********************************************************************/
 .controller('BoardController', function(SystemsFactory, FretBoardFactory) {
-	var system = SystemsFactory.getSelected(),
-		chordTuningIndex,
-		chordTuning,
-		chord;
-	this.chordsTuning = [];
-	for (chordTuningIndex in FretBoardFactory.baseTuning) {
-		chordTuning = FretBoardFactory.baseTuning[chordTuningIndex];
-		this.chordsTuning.push(FretBoardFactory.getChords(system, chordTuning));
-	}
+	this.chordsTuning = FretBoardFactory.getBoard(
+		SystemsFactory.getSelected()
+	);
 
 	this.click = function(string, fret) {
 		console.log(string, fret);
