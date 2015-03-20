@@ -102,12 +102,18 @@ angular.module('bassPracticeApp', [])
 				chord = _getChord(tuning, c, system);
 			}
 			else if (system == SystemsFactory.systems.all.id) {
-				chord = _getChord(tuning, c, 'english')
-					+ ' / ' + _getChord(tuning, c, 'romance')
+				chord = [
+					_getChord(tuning, c, 'english'),
+					_getChord(tuning, c, 'romance')
+				];
 			}
 
 			if (c == 0) {
 				returnedChords.tuning = chord;
+				if (system == SystemsFactory.systems.all.id) {
+					returnedChords.tuning = returnedChords.tuning.join(' / ');
+				}
+
 				returnedChords.chords = [];
 			}
 			returnedChords.chords.push(chord);
@@ -146,6 +152,10 @@ angular.module('bassPracticeApp', [])
 	this.click = function(string, fret) {
 		console.log(string, fret);
 	};
+
+	this.displayChord = function(chord) {
+		return chord.join && chord.join(' / ') || chord;
+	}
 })
 /**********************************************************************/
 /** END CONTROLLERS                                                  **/
