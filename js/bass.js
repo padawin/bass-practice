@@ -113,7 +113,7 @@ angular.module('bassPracticeApp', [])
  * Romance (Do Ré Mi Fa Sol La Si) and All (both previous combined).
  */
 .factory('SystemsFactory', function() {
-	var systems, chords, selected;
+	var systems, chords, selected, scaleLength;
 
 	chords = [
 		// English
@@ -121,6 +121,8 @@ angular.module('bassPracticeApp', [])
 		// Romance
 		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
 	];
+
+	scaleLength = 12;
 
 	function getRandomNote() {
 		var firstChord = systems.systems[selected].chordsRange[0],
@@ -130,6 +132,7 @@ angular.module('bassPracticeApp', [])
 
 	systems = {
 		chords: chords,
+		scaleLength: scaleLength,
 		systems: {
 			english: {
 				chordsRange: [0, 11],
@@ -170,7 +173,7 @@ angular.module('bassPracticeApp', [])
  */
 .factory('FretBoardFactory', function(SystemsFactory) {
 	// constants
-	var defaultVal, maxVal, scaleLength, chordsBaseTuning,
+	var defaultVal, maxVal, chordsBaseTuning,
 		// instances attributes
 		fretsNumber, stringsNumber, tuning;
 
@@ -182,7 +185,6 @@ angular.module('bassPracticeApp', [])
 		frets: 12,
 		strings: 6
 	};
-	scaleLength = 12;
 
 	chordsBaseTuning = [4, 9, 2, 7, 11];
 
@@ -239,7 +241,7 @@ angular.module('bassPracticeApp', [])
 		delta = tuning - chordsBaseTuning[0];
 		board = [];
 		for (string = 0; string < stringsNumber; string++) {
-			tuning = (chordsBaseTuning[string % chordsBaseTuning.length] + delta) % scaleLength;
+			tuning = (chordsBaseTuning[string % chordsBaseTuning.length] + delta) % SystemsFactory.scaleLength;
 			board.push(_getChords(system, tuning));
 
 		}
