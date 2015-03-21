@@ -272,7 +272,7 @@ angular.module('bassPracticeApp', [])
 /** CONTROLLERS                                                      **/
 /**********************************************************************/
 .controller('BoardController', function(SystemsFactory, FretBoardFactory, GameEngineFactory) {
-	this.chordsTuning = FretBoardFactory.getBoard(
+	this.board = FretBoardFactory.getBoard(
 		SystemsFactory.getSelected()
 	);
 
@@ -284,7 +284,7 @@ angular.module('bassPracticeApp', [])
 
 	this.click = function(string, fret) {
 		var result = GameEngineFactory.playNote(
-			this.chordsTuning[string].chords[fret]
+			this.board[string].chords[fret]
 		);
 	};
 

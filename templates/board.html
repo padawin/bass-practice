@@ -2,14 +2,14 @@
 	<thead>
 		<tr>
 			<th>String</th>
-			<th data-ng-repeat="fret in controller.chordsTuning[0].chords track by $index">
+			<th data-ng-repeat="fret in controller.board[0].chords track by $index">
 				<span data-ng-if="$index == 0">Open</span>
 				<span data-ng-if="$index > 0">fret {{$index}}</span>
 			</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr data-ng-repeat="strings in controller.chordsTuning">
+		<tr data-ng-repeat="strings in controller.board">
 			<th>{{controller.displayChord(strings.openString)}}</th>
 			<td data-ng-repeat="chord in strings.chords track by $index"
 				data-ng-click="controller.click($parent.$index, $index)"
