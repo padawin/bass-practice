@@ -209,8 +209,8 @@ angular.module('bassPracticeApp', [])
 			}
 			else if (system == SystemsFactory.systems.all.id) {
 				chord = [
-					_getChord(tuning, c, 'english'),
-					_getChord(tuning, c, 'romance')
+					_getChord(tuning, c, SystemsFactory.systems.english.id),
+					_getChord(tuning, c, SystemsFactory.systems.romance.id)
 				];
 			}
 
