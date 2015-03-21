@@ -212,13 +212,15 @@ angular.module('bassPracticeApp', [])
 /**********************************************************************/
 /** CONTROLLERS                                                      **/
 /**********************************************************************/
-.controller('BoardController', function(SystemsFactory, FretBoardFactory) {
+.controller('BoardController', function(SystemsFactory, FretBoardFactory, GameEngineFactory) {
 	this.chordsTuning = FretBoardFactory.getBoard(
 		SystemsFactory.getSelected()
 	);
 
 	this.click = function(string, fret) {
-		console.log(string, fret);
+		var result = GameEngineFactory.playNote(
+			this.chordsTuning[string].chords[fret]
+		);
 	};
 
 	this.displayChord = function(chord) {
@@ -259,7 +261,7 @@ angular.module('bassPracticeApp', [])
  * Directive for the menu to choose the mode and system
  */
 .directive('modeSelection', function() {
-	function ModeController(ModesFactory, SystemsFactory) {
+	function ModeController(ModesFactory, SystemsFactory, GameEngineFactory) {
 		this.availableModes = ModesFactory.modes.available;
 		this.availableSystems = SystemsFactory.systems;
 
@@ -273,6 +275,10 @@ angular.module('bassPracticeApp', [])
 		this.start = function() {
 			ModesFactory.setSelected(this.mode.mode);
 			SystemsFactory.setSelected(this.mode.system);
+
+			if (this.mode.mode == ModesFactory.modes.available.PRACTICE) {
+				GameEngineFactory.start(5);
+			}
 		};
 	}
 
