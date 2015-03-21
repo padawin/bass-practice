@@ -193,7 +193,7 @@ angular.module('bassPracticeApp', [])
 	 * @returns string|array String if the system is english/romance,
 	 * 		array if the system is all
 	 */
-	function _getChord(tuning, fret, system) {
+	function _getChord(system, tuning, fret) {
 		// The absolute chord is not system dependant, just the index
 		//	of the chord in the scale
 		// The returned value is the index of the chord in the actual
@@ -212,12 +212,12 @@ angular.module('bassPracticeApp', [])
 
 		for (c = 0; c <= fretsNumber; c++) {
 			if (system == SystemsFactory.systems.english.id || system == SystemsFactory.systems.romance.id) {
-				chord = _getChord(tuning, c, system);
+				chord = _getChord(system, tuning, c);
 			}
 			else if (system == SystemsFactory.systems.all.id) {
 				chord = [
-					_getChord(tuning, c, SystemsFactory.systems.english.id),
-					_getChord(tuning, c, SystemsFactory.systems.romance.id)
+					_getChord(SystemsFactory.systems.english.id, tuning, c),
+					_getChord(SystemsFactory.systems.romance.id, tuning, c)
 				];
 			}
 
