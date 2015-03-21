@@ -113,7 +113,7 @@ angular.module('bassPracticeApp', [])
  * Romance (Do Ré Mi Fa Sol La Si) and All (both previous combined).
  */
 .factory('SystemsFactory', function() {
-	var systems, chords;
+	var systems, chords, selected;
 
 	chords = [
 		// English
@@ -141,14 +141,13 @@ angular.module('bassPracticeApp', [])
 				id: 'all'
 			}
 		},
-		selected: null,
 
 		setSelected: function(s) {
-			systems.selected = s;
+			selected = s;
 		},
 
 		getSelected: function() {
-			return systems.selected;
+			return selected;
 		},
 	};
 
