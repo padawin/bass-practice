@@ -216,7 +216,7 @@ angular.module('bassPracticeApp', [])
 			system: SystemsFactory.systems.english.id
 		};
 
-		this.selectMode = function() {
+		this.start = function() {
 			ModesFactory.setSelected(this.mode.mode);
 			SystemsFactory.setSelected(this.mode.system);
 		};
