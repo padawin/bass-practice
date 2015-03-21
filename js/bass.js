@@ -22,7 +22,7 @@ angular.module('bassPracticeApp', [])
 			return;
 		}
 
-		note = FretBoardFactory.getRandomNote(SystemsFactory.getSelected());
+		note = SystemsFactory.getRandomNote();
 		canPlay = true;
 	}
 
@@ -122,6 +122,12 @@ angular.module('bassPracticeApp', [])
 		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
 	];
 
+	function getRandomNote() {
+		var firstChord = systems.systems[selected].chordsRange[0],
+			lastChord = systems.systems[selected].chordsRange[1];
+		return chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
+	}
+
 	systems = {
 		chords: chords,
 		systems: {
@@ -149,6 +155,8 @@ angular.module('bassPracticeApp', [])
 		getSelected: function() {
 			return selected;
 		},
+
+		getRandomNote: getRandomNote
 	};
 
 	return systems;
@@ -220,12 +228,6 @@ angular.module('bassPracticeApp', [])
 		return returnedChords;
 	}
 
-	function getRandomNote(system) {
-		var firstChord = SystemsFactory.systems[system].chordsRange[0],
-			lastChord = SystemsFactory.systems[system].chordsRange[1];
-		return SystemsFactory.chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
-	}
-
 	function getBoard(system, tuning) {
 		var board, delta, string;
 
@@ -250,10 +252,7 @@ angular.module('bassPracticeApp', [])
 	}
 
 	return {
-		baseTuning: chordsBaseTuning,
-
 		getBoard: getBoard,
-		getRandomNote: getRandomNote,
 		setFretsNumber: setFretsNumber,
 		setStringsNumber: setStringsNumber
 	};
