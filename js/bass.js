@@ -155,11 +155,19 @@ angular.module('bassPracticeApp', [])
  */
 .factory('FretBoardFactory', function(SystemsFactory) {
 	// constants
-	var maxStringsNumber, scaleLength, chords, chordsBaseTuning,
+	var defaultVal, maxVal, scaleLength, chords, chordsBaseTuning,
 		// instances attributes
 		fretsNumber, stringsNumber,
 		fretBoard;
 
+	defaultVal = {
+		frets: 12,
+		strings: 6
+	};
+	maxVal = {
+		frets: 12,
+		strings: 6
+	};
 	scaleLength = 12;
 
 	chords = [
@@ -171,15 +179,17 @@ angular.module('bassPracticeApp', [])
 
 	chordsBaseTuning = [4, 11, 7, 2, 9, 4];
 	stringsNumber = 4;
-	maxStringsNumber = 4;
 
 	function _getChord(tuning, fret, system) {
 		// The absolute chord is not system dependant, just the index
 		//	of the chord in the scale
 		// The returned value is the index of the chord in the actual
 		//	scale
-		var absoluteChord = chords[(tuning + fret) % scaleLength];
-		return absoluteChord + SystemsFactory.systems[system].chordsRange[0];
+		var absoluteChord = (tuning + fret) % scaleLength;
+		return chords[
+			absoluteChord
+			+ SystemsFactory.systems[system].chordsRange[0]
+		];
 	}
 
 	function _getChords(system, tuning) {
@@ -231,7 +241,7 @@ angular.module('bassPracticeApp', [])
 	}
 
 	function setFretsNumber(nbFrets) {
-		fretsNumber = parseInt(nbFrets) || 12;
+		fretsNumber = Math.min(parseInt(nbFrets) || defaultVal.frets, maxVal.frets);
 	}
 
 	fretBoard = {
