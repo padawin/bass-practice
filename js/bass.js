@@ -186,6 +186,13 @@ angular.module('bassPracticeApp', [])
 
 	chordsBaseTuning = [4, 9, 2, 7, 11];
 
+	/**
+	 * Returns a note in a given system located on a given string on
+	 * a given fret
+	 *
+	 * @returns string|array String if the system is english/romance,
+	 * 		array if the system is all
+	 */
 	function _getChord(tuning, fret, system) {
 		// The absolute chord is not system dependant, just the index
 		//	of the chord in the scale
