@@ -123,6 +123,12 @@ angular.module('bassPracticeApp', [])
 		return returnedChords;
 	}
 
+	function getRandomNote(system) {
+		var firstChord = SystemsFactory.systems[system].chordsRange[0],
+			lastChord = SystemsFactory.systems[system].chordsRange[1];
+		return chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
+	}
+
 	function getBoard(system) {
 		var board, chordTuning, chordTuningIndex;
 
@@ -139,7 +145,8 @@ angular.module('bassPracticeApp', [])
 		chords: chords,
 		baseTuning: chordsBaseTuning,
 
-		getBoard: getBoard
+		getBoard: getBoard,
+		getRandomNote: getRandomNote
 	};
 
 	return fretBoard;
