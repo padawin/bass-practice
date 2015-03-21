@@ -206,7 +206,9 @@ angular.module('bassPracticeApp', [])
 	}
 
 	function _getChords(system, openString) {
-		var returnedChords = {},
+		var returnedChords = {
+				chords: []
+			},
 			chord,
 			c;
 
@@ -222,12 +224,7 @@ angular.module('bassPracticeApp', [])
 			}
 
 			if (c == 0) {
-				returnedChords.openString = chord;
-				if (system == SystemsFactory.systems.all.id) {
-					returnedChords.openString = returnedChords.openString.join(' / ');
-				}
-
-				returnedChords.chords = [];
+				returnedChords.openString = chord.join && chord.join(' / ') || chord;
 			}
 			returnedChords.chords.push(chord);
 		}
