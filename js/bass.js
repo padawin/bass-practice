@@ -176,7 +176,7 @@ angular.module('bassPracticeApp', [])
 		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
 	];
 
-	chordsBaseTuning = [4, 11, 7, 2, 9, 4];
+	chordsBaseTuning = [4, 9, 2, 7, 11];
 	stringsNumber = 4;
 
 	function _getChord(tuning, fret, system) {
@@ -227,16 +227,19 @@ angular.module('bassPracticeApp', [])
 		return chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
 	}
 
-	function getBoard(system) {
-		var board, chordTuning, chordTuningIndex;
+	function getBoard(system, tuning) {
+		var board, delta, string;
 
+		tuning = 4;
+		delta = tuning - chordsBaseTuning[0];
 		board = [];
-		for (chordTuningIndex in chordsBaseTuning) {
-			chordTuning = chordsBaseTuning[chordTuningIndex];
-			board.push(_getChords(system, chordTuning));
+		for (string = 0; string < stringsNumber; string++) {
+			tuning = (chordsBaseTuning[string % chordsBaseTuning.length] + delta) % scaleLength;
+			board.push(_getChords(system, tuning));
+
 		}
 
-		return board;
+		return board.reverse();
 	}
 
 	function setFretsNumber(nbFrets) {
