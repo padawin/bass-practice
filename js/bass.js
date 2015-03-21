@@ -113,9 +113,17 @@ angular.module('bassPracticeApp', [])
  * Romance (Do Ré Mi Fa Sol La Si) and All (both previous combined).
  */
 .factory('SystemsFactory', function() {
-	var systems;
+	var systems, chords;
+
+	chords = [
+		// English
+		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+		// Romance
+		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
+	];
 
 	systems = {
+		chords: chords,
 		systems: {
 			english: {
 				chordsRange: [0, 11],
@@ -155,7 +163,7 @@ angular.module('bassPracticeApp', [])
  */
 .factory('FretBoardFactory', function(SystemsFactory) {
 	// constants
-	var defaultVal, maxVal, scaleLength, chords, chordsBaseTuning,
+	var defaultVal, maxVal, scaleLength, chordsBaseTuning,
 		// instances attributes
 		fretsNumber, stringsNumber, tuning;
 
@@ -169,13 +177,6 @@ angular.module('bassPracticeApp', [])
 	};
 	scaleLength = 12;
 
-	chords = [
-		// English
-		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
-		// Romance
-		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
-	];
-
 	chordsBaseTuning = [4, 9, 2, 7, 11];
 
 	function _getChord(tuning, fret, system) {
@@ -184,7 +185,7 @@ angular.module('bassPracticeApp', [])
 		// The returned value is the index of the chord in the actual
 		//	scale
 		var absoluteChord = (tuning + fret) % scaleLength;
-		return chords[
+		return SystemsFactory.chords[
 			absoluteChord
 			+ SystemsFactory.systems[system].chordsRange[0]
 		];
@@ -223,7 +224,7 @@ angular.module('bassPracticeApp', [])
 	function getRandomNote(system) {
 		var firstChord = SystemsFactory.systems[system].chordsRange[0],
 			lastChord = SystemsFactory.systems[system].chordsRange[1];
-		return chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
+		return SystemsFactory.chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
 	}
 
 	function getBoard(system, tuning) {
@@ -250,7 +251,6 @@ angular.module('bassPracticeApp', [])
 	}
 
 	return {
-		chords: chords,
 		baseTuning: chordsBaseTuning,
 
 		getBoard: getBoard,
