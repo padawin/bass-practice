@@ -154,7 +154,9 @@ angular.module('bassPracticeApp', [])
  * of the tuning.
  */
 .factory('FretBoardFactory', function(SystemsFactory) {
-	var chords, fretsNumber, stringsNumber, maxStringsNumber, chordsBaseTuning, fretBoard;
+	var chords, fretsNumber, stringsNumber, maxStringsNumber, chordsBaseTuning, fretBoard, scaleLength;
+
+	scaleLength = 12;
 
 	chords = [
 		// English
@@ -168,7 +170,7 @@ angular.module('bassPracticeApp', [])
 	maxStringsNumber = 4;
 
 	function _getChord(tuning, fret, system) {
-		return chords[(tuning + fret) % fretsNumber + SystemsFactory.systems[system].chordsRange[0]];
+		return chords[(tuning + fret) % scaleLength + SystemsFactory.systems[system].chordsRange[0]];
 	}
 
 	function _getChords(system, tuning) {
