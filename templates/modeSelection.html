@@ -20,8 +20,11 @@
 	<label for="turns">Number of frets: </label>
 	<input type="text" data-ng-model="frets" name="frets" />
 	<br />
+	<label for="turns">Number of strings: </label>
+	<input type="text" data-ng-model="strings" name="strings" />
+	<br />
 	<label for="turns">Number of turns: </label>
 	<input type="text" data-ng-model="turns" name="turns" />
 	<br />
-	<input type="submit" value="start" data-ng-click="modeController.start(frets, turns)" />
+	<input type="submit" value="start" data-ng-click="modeController.start(frets, strings, turns)" />
 </form>

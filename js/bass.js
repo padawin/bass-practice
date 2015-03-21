@@ -157,7 +157,7 @@ angular.module('bassPracticeApp', [])
 	// constants
 	var defaultVal, maxVal, scaleLength, chords, chordsBaseTuning,
 		// instances attributes
-		fretsNumber, stringsNumber;
+		fretsNumber, stringsNumber, tuning;
 
 	defaultVal = {
 		frets: 12,
@@ -177,7 +177,6 @@ angular.module('bassPracticeApp', [])
 	];
 
 	chordsBaseTuning = [4, 9, 2, 7, 11];
-	stringsNumber = 4;
 
 	function _getChord(tuning, fret, system) {
 		// The absolute chord is not system dependant, just the index
@@ -246,13 +245,18 @@ angular.module('bassPracticeApp', [])
 		fretsNumber = Math.min(parseInt(nbFrets) || defaultVal.frets, maxVal.frets);
 	}
 
+	function setStringsNumber(nbStrings) {
+		stringsNumber = Math.min(parseInt(nbStrings) || defaultVal.strings, maxVal.strings);
+	}
+
 	return {
 		chords: chords,
 		baseTuning: chordsBaseTuning,
 
 		getBoard: getBoard,
 		getRandomNote: getRandomNote,
-		setFretsNumber: setFretsNumber
+		setFretsNumber: setFretsNumber,
+		setStringsNumber: setStringsNumber
 	};
 })
 /**********************************************************************/
@@ -328,10 +332,11 @@ angular.module('bassPracticeApp', [])
 			system: SystemsFactory.systems.english.id
 		};
 
-		this.start = function(frets, turns) {
+		this.start = function(frets, strings, turns) {
 			ModesFactory.setSelected(this.mode.mode);
 			SystemsFactory.setSelected(this.mode.system);
 			FretBoardFactory.setFretsNumber(frets);
+			FretBoardFactory.setStringsNumber(strings);
 
 			if (this.mode.mode == ModesFactory.modes.available.PRACTICE) {
 				GameEngineFactory.start(turns);
