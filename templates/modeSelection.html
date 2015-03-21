@@ -1,0 +1,21 @@
+<form>
+	<label for="mode">Mode: </label>
+	<ul>
+		<li>
+			<input type="radio" data-ng-model="modeController.mode.mode" name="mode" id="mode-learning" value="{{modeController.availableModes.LEARNING}}" />
+			<label for="mode-learning">Learning</label>
+		</li>
+		<li>
+			<input type="radio" data-ng-model="modeController.mode.mode" name="mode" id="mode-practice" value="{{modeController.availableModes.PRACTICE}}" />
+			<label for="mode-practice">Practice</label>
+		</li>
+	</ul>
+	<label for="system">System: </label>
+	<ul>
+		<li data-ng-repeat="system in modeController.availableSystems">
+			<input type="radio" data-ng-model="modeController.mode.system" name="system" id="system-{{system.id}}" value="{{system.id}}" />
+			<label for="system-{{system.id}}">{{system.label}}</label>
+		</li>
+	</ul>
+	<input type="submit" value="start" data-ng-click="modeController.start()" />
+</form>

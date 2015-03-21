@@ -1,109 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html data-ng-app="bassPracticeApp">
 	<head>
 		<meta charset="UTF-8">
 		<title>Bass practice</title>
 		<link rel="stylesheet" href="css/bass.css">
-		<script type="text/javascript" src="http://padawin.github.io/Butterfly-js/js/Butterfly.js"></script>
+		<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
 		<script type="text/javascript" src="js/bass.js"></script>
-		<script type="text/javascript">
-			B.addEvent(window, 'load', function() {
-				var b = new BassPractice(B.$id('board'), BassPractice.modes.ENGLISH);
-				b.start(10);
-			});
-		</script>
 	</head>
 	<body>
-		<table id="board">
-			<thead>
-				<tr>
-					<th>Fret</th>
-					<th>Open</th>
-					<th>1</th>
-					<th>2</th>
-					<th>3</th>
-					<th>4</th>
-					<th>5</th>
-					<th>6</th>
-					<th>7</th>
-					<th>8</th>
-					<th>9</th>
-					<th>10</th>
-					<th>11</th>
-					<th>12</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th>String 1</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>String 2</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>String 3</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<th>String 4</th>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
-		<div id="turn"></div>
-		<div id="note-to-play"></div>
-		<div id="answer"></div>
-		<div id="result"></div>
-		<a href="" id="restart">Restart</a>
+		<bass-practice-page></bass-practice-page>
 	</body>
 </html>

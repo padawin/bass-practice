@@ -1,0 +1,5 @@
+<div>
+	<mode-selection data-ng-if="pageController.checkMode(null)" data-selectedmode="pageController.mode"></mode-selection>
+	<mode-learning data-ng-if="pageController.checkMode(pageController.availableModes.LEARNING)"></mode-learning>
+	<mode-practice data-ng-if="pageController.checkMode(pageController.availableModes.PRACTICE)"></mode-practice>
+</div>

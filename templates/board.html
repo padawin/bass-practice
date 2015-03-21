@@ -1,0 +1,22 @@
+<table id="board">
+	<thead>
+		<tr>
+			<th>String</th>
+			<th data-ng-repeat="fret in controller.chordsTuning[0].chords track by $index">
+				<span data-ng-if="$index == 0">Open</span>
+				<span data-ng-if="$index > 0">fret {{$index}}</span>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr data-ng-repeat="strings in controller.chordsTuning">
+			<th>{{controller.displayChord(strings.tuning)}}</th>
+			<td data-ng-repeat="chord in strings.chords track by $index"
+				data-ng-click="controller.click($parent.$index, $index)"
+			>
+				<span data-ng-if="displayChords">{{controller.displayChord(chord)}}</span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
