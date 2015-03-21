@@ -27,7 +27,7 @@ angular.module('bassPracticeApp', [])
 	}
 
 	function start(initTurns) {
-		turn = totalTurns = initTurns;
+		turn = totalTurns = parseInt(initTurns) || 5;
 		results = {correct: 0, incorrect: 0};
 
 		_turn();
@@ -303,12 +303,12 @@ angular.module('bassPracticeApp', [])
 			system: SystemsFactory.systems.english.id
 		};
 
-		this.start = function() {
+		this.start = function(turns) {
 			ModesFactory.setSelected(this.mode.mode);
 			SystemsFactory.setSelected(this.mode.system);
 
 			if (this.mode.mode == ModesFactory.modes.available.PRACTICE) {
-				GameEngineFactory.start(5);
+				GameEngineFactory.start(turns);
 			}
 		};
 	}
