@@ -157,8 +157,7 @@ angular.module('bassPracticeApp', [])
 	// constants
 	var defaultVal, maxVal, scaleLength, chords, chordsBaseTuning,
 		// instances attributes
-		fretsNumber, stringsNumber,
-		fretBoard;
+		fretsNumber, stringsNumber;
 
 	defaultVal = {
 		frets: 12,
@@ -244,7 +243,7 @@ angular.module('bassPracticeApp', [])
 		fretsNumber = Math.min(parseInt(nbFrets) || defaultVal.frets, maxVal.frets);
 	}
 
-	fretBoard = {
+	return {
 		chords: chords,
 		baseTuning: chordsBaseTuning,
 
@@ -252,8 +251,6 @@ angular.module('bassPracticeApp', [])
 		getRandomNote: getRandomNote,
 		setFretsNumber: setFretsNumber
 	};
-
-	return fretBoard;
 })
 /**********************************************************************/
 /** END FACTORIES                                                    **/
