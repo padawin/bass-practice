@@ -10,7 +10,7 @@
 	</thead>
 	<tbody>
 		<tr data-ng-repeat="strings in controller.chordsTuning">
-			<th>{{controller.displayChord(strings.tuning)}}</th>
+			<th>{{controller.displayChord(strings.openString)}}</th>
 			<td data-ng-repeat="chord in strings.chords track by $index"
 				data-ng-click="controller.click($parent.$index, $index)"
 			>
