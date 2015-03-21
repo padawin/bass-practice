@@ -164,7 +164,6 @@ angular.module('bassPracticeApp', [])
 	];
 
 	chordsBaseTuning = [4, 11, 7, 2, 9, 4];
-	fretsNumber = 12;
 	stringsNumber = 4;
 	maxStringsNumber = 4;
 
@@ -220,12 +219,17 @@ angular.module('bassPracticeApp', [])
 		return board;
 	}
 
+	function setFretsNumber(nbFrets) {
+		fretsNumber = parseInt(nbFrets) || 12;
+	}
+
 	fretBoard = {
 		chords: chords,
 		baseTuning: chordsBaseTuning,
 
 		getBoard: getBoard,
-		getRandomNote: getRandomNote
+		getRandomNote: getRandomNote,
+		setFretsNumber: setFretsNumber
 	};
 
 	return fretBoard;
@@ -292,7 +296,7 @@ angular.module('bassPracticeApp', [])
  * Directive for the menu to choose the mode and system
  */
 .directive('modeSelection', function() {
-	function ModeController(ModesFactory, SystemsFactory, GameEngineFactory) {
+	function ModeController(ModesFactory, SystemsFactory, FretBoardFactory, GameEngineFactory) {
 		this.availableModes = ModesFactory.modes.available;
 		this.availableSystems = SystemsFactory.systems;
 
@@ -303,9 +307,10 @@ angular.module('bassPracticeApp', [])
 			system: SystemsFactory.systems.english.id
 		};
 
-		this.start = function(turns) {
+		this.start = function(frets, turns) {
 			ModesFactory.setSelected(this.mode.mode);
 			SystemsFactory.setSelected(this.mode.system);
+			FretBoardFactory.setFretsNumber(frets);
 
 			if (this.mode.mode == ModesFactory.modes.available.PRACTICE) {
 				GameEngineFactory.start(turns);
