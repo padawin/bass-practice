@@ -50,9 +50,34 @@ angular.module('bassPracticeApp', [])
 		return result;
 	}
 
+	function getExpectedNote() {
+		return note;
+	}
+
+	function getTurn() {
+		return Math.min(totalTurns - turn, totalTurns);
+	}
+
+	function getTotalTurns() {
+		return totalTurns;
+	}
+
+	function getResults() {
+		return results;
+	}
+
+	function isFinished() {
+		return turn < 0;
+	}
+
 	gameEngineFactory = {
 		start: start,
-		playNote: playNote
+		playNote: playNote,
+		getExpectedNote: getExpectedNote,
+		getTurn: getTurn,
+		getTotalTurns: getTotalTurns,
+		isFinished: isFinished,
+		getResults: getResults
 	};
 
 	return gameEngineFactory;
@@ -216,6 +241,12 @@ angular.module('bassPracticeApp', [])
 	this.chordsTuning = FretBoardFactory.getBoard(
 		SystemsFactory.getSelected()
 	);
+
+	this.getExpectedNote = GameEngineFactory.getExpectedNote;
+	this.getTotalTurns = GameEngineFactory.getTotalTurns;
+	this.getTurn = GameEngineFactory.getTurn;
+	this.isFinished = GameEngineFactory.isFinished;
+	this.getResults = GameEngineFactory.getResults;
 
 	this.click = function(string, fret) {
 		var result = GameEngineFactory.playNote(
