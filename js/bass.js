@@ -130,6 +130,55 @@ angular.module('bassPracticeApp', [])
 		return chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
 	}
 
+	/**
+	 * Returns a note in a given system located on a given string on
+	 * a given fret
+	 *
+	 * @returns string|array String if the system is english/romance,
+	 * 		array if the system is all
+	 */
+	function _getChord(system, openString, fret) {
+		// The absolute chord is not system dependant, just the index
+		//	of the chord in the scale
+		// The returned value is the index of the chord in the actual
+		//	scale
+		var absoluteChord = (openString + fret) % scaleLength;
+		return systems.chords[
+			absoluteChord
+			+ systems.systems[system].chordsRange[0]
+		];
+	}
+
+	/**
+	 *
+	 */
+	function getChords(openString, fretsNumber) {
+		var returnedChords = {
+				chords: []
+			},
+			chord,
+			c;
+
+		for (c = 0; c <= fretsNumber; c++) {
+			if (selected == systems.systems.english.id || selected == systems.systems.romance.id) {
+				chord = _getChord(selected, openString, c);
+			}
+			else if (selected == systems.systems.all.id) {
+				chord = [
+					_getChord(systems.systems.english.id, openString, c),
+					_getChord(systems.systems.romance.id, openString, c)
+				];
+			}
+
+			if (c == 0) {
+				returnedChords.openString = chord.join && chord.join(' / ') || chord;
+			}
+			returnedChords.chords.push(chord);
+		}
+
+		return returnedChords;
+	}
+
 	systems = {
 		chords: chords,
 		scaleLength: scaleLength,
@@ -159,7 +208,8 @@ angular.module('bassPracticeApp', [])
 			return selected;
 		},
 
-		getRandomNote: getRandomNote
+		getRandomNote: getRandomNote,
+		getChords: getChords
 	};
 
 	return systems;
@@ -188,52 +238,6 @@ angular.module('bassPracticeApp', [])
 
 	chordsBaseTuning = [4, 9, 2, 7, 11];
 
-	/**
-	 * Returns a note in a given system located on a given string on
-	 * a given fret
-	 *
-	 * @returns string|array String if the system is english/romance,
-	 * 		array if the system is all
-	 */
-	function _getChord(system, openString, fret) {
-		// The absolute chord is not system dependant, just the index
-		//	of the chord in the scale
-		// The returned value is the index of the chord in the actual
-		//	scale
-		var absoluteChord = (openString + fret) % scaleLength;
-		return SystemsFactory.chords[
-			absoluteChord
-			+ SystemsFactory.systems[system].chordsRange[0]
-		];
-	}
-
-	function _getChords(system, openString) {
-		var returnedChords = {
-				chords: []
-			},
-			chord,
-			c;
-
-		for (c = 0; c <= fretsNumber; c++) {
-			if (system == SystemsFactory.systems.english.id || system == SystemsFactory.systems.romance.id) {
-				chord = _getChord(system, openString, c);
-			}
-			else if (system == SystemsFactory.systems.all.id) {
-				chord = [
-					_getChord(SystemsFactory.systems.english.id, openString, c),
-					_getChord(SystemsFactory.systems.romance.id, openString, c)
-				];
-			}
-
-			if (c == 0) {
-				returnedChords.openString = chord.join && chord.join(' / ') || chord;
-			}
-			returnedChords.chords.push(chord);
-		}
-
-		return returnedChords;
-	}
-
 	function getBoard(system, tuning) {
 		var board, delta, string;
 
@@ -242,8 +246,7 @@ angular.module('bassPracticeApp', [])
 		board = [];
 		for (string = 0; string < stringsNumber; string++) {
 			tuning = (chordsBaseTuning[string % chordsBaseTuning.length] + delta) % SystemsFactory.scaleLength;
-			board.push(_getChords(system, tuning));
-
+			board.push(SystemsFactory.getChords(tuning, fretsNumber));
 		}
 
 		return board.reverse();
