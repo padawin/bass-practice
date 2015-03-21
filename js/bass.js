@@ -4,6 +4,60 @@ angular.module('bassPracticeApp', [])
 /**********************************************************************/
 /** FACTORIES                                                        **/
 /**********************************************************************/
+
+.factory('GameEngineFactory', function(SystemsFactory, FretBoardFactory) {
+	var gameEngineFactory,
+		turn,
+		totalTurns,
+		canPlay,
+		note,
+		results;
+
+	canPlay = false;
+
+	function _turn() {
+		if (turn-- == 0) {
+			note = null;
+			canPlay = false;
+			return;
+		}
+
+		note = FretBoardFactory.getRandomNote(SystemsFactory.getSelected());
+		canPlay = true;
+	}
+
+	function start(initTurns) {
+		turn = totalTurns = initTurns;
+		results = {correct: 0, incorrect: 0};
+
+		_turn();
+	}
+
+	function playNote(playedNote) {
+		if (!canPlay) {
+			return null;
+		}
+
+		var result;
+		if (playedNote.join && !!~playedNote.indexOf(note) || playedNote == note) {
+			result = true;
+			results.correct++;
+		}
+		else {
+			results.incorrect++;
+		}
+		_turn();
+		return result;
+	}
+
+	gameEngineFactory = {
+		start: start,
+		playNote: playNote
+	};
+
+	return gameEngineFactory;
+})
+
 /**
  * Factory to work with modes.
  * The available modes are:
