@@ -54,6 +54,10 @@ angular.module('bassPracticeApp', [])
 		return note;
 	}
 
+	function getDefaultTurnsNumber() {
+		return 10;
+	}
+
 	function getTurn() {
 		return Math.min(totalTurns - turn, totalTurns);
 	}
@@ -76,6 +80,7 @@ angular.module('bassPracticeApp', [])
 		getExpectedNote: getExpectedNote,
 		getTurn: getTurn,
 		getTotalTurns: getTotalTurns,
+		getDefaultTurnsNumber: getDefaultTurnsNumber,
 		isFinished: isFinished,
 		getResults: getResults
 	};
@@ -227,16 +232,17 @@ angular.module('bassPracticeApp', [])
 		// instances attributes
 		fretsNumber, stringsNumber, tuning;
 
+	chordsBaseTuning = [4, 9, 2, 7, 11];
+
 	defaultVal = {
 		frets: 12,
-		strings: 6
+		strings: 6,
+		tuning: chordsBaseTuning[0]
 	};
 	maxVal = {
 		frets: 12,
 		strings: 6
 	};
-
-	chordsBaseTuning = [4, 9, 2, 7, 11];
 
 	function getBoard(system, tuning) {
 		var board, delta, string;
@@ -263,7 +269,10 @@ angular.module('bassPracticeApp', [])
 	return {
 		getBoard: getBoard,
 		setFretsNumber: setFretsNumber,
-		setStringsNumber: setStringsNumber
+		setStringsNumber: setStringsNumber,
+		getDefaults: function() {
+			return defaultVal;
+		}
 	};
 })
 /**********************************************************************/
@@ -332,21 +341,25 @@ angular.module('bassPracticeApp', [])
 		this.availableModes = ModesFactory.modes.available;
 		this.availableSystems = SystemsFactory.systems;
 
-		// There may be other options later, such as tuning, number of
-		// strings...
+		var defaultValues = FretBoardFactory.getDefaults();
+
 		this.mode = {
 			mode: ModesFactory.modes.available.PRACTICE,
-			system: SystemsFactory.systems.english.id
+			system: SystemsFactory.systems.english.id,
+			turnsNumber: GameEngineFactory.getDefaultTurnsNumber(),
+			stringsNumber: defaultValues.strings,
+			fretsNumber: defaultValues.frets,
+			tuning: defaultValues.tuning
 		};
 
 		this.start = function(frets, strings, turns) {
 			ModesFactory.setSelected(this.mode.mode);
 			SystemsFactory.setSelected(this.mode.system);
-			FretBoardFactory.setFretsNumber(frets);
-			FretBoardFactory.setStringsNumber(strings);
+			FretBoardFactory.setFretsNumber(this.mode.fretsNumber);
+			FretBoardFactory.setStringsNumber(this.mode.stringsNumber);
 
 			if (this.mode.mode == ModesFactory.modes.available.PRACTICE) {
-				GameEngineFactory.start(turns);
+				GameEngineFactory.start(this.mode.turnsNumber);
 			}
 		};
 	}
