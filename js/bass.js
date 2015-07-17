@@ -22,12 +22,12 @@ angular.module('bassPracticeApp', [])
 			return;
 		}
 
-		note = FretBoardFactory.getRandomNote(SystemsFactory.getSelected());
+		note = SystemsFactory.getRandomNote();
 		canPlay = true;
 	}
 
 	function start(initTurns) {
-		turn = totalTurns = initTurns;
+		turn = totalTurns = parseInt(initTurns) || getDefaultTurnsNumber();
 		results = {correct: 0, incorrect: 0};
 
 		_turn();
@@ -54,6 +54,10 @@ angular.module('bassPracticeApp', [])
 		return note;
 	}
 
+	function getDefaultTurnsNumber() {
+		return 10;
+	}
+
 	function getTurn() {
 		return Math.min(totalTurns - turn, totalTurns);
 	}
@@ -76,6 +80,7 @@ angular.module('bassPracticeApp', [])
 		getExpectedNote: getExpectedNote,
 		getTurn: getTurn,
 		getTotalTurns: getTotalTurns,
+		getDefaultTurnsNumber: getDefaultTurnsNumber,
 		isFinished: isFinished,
 		getResults: getResults
 	};
@@ -113,9 +118,75 @@ angular.module('bassPracticeApp', [])
  * Romance (Do Ré Mi Fa Sol La Si) and All (both previous combined).
  */
 .factory('SystemsFactory', function() {
-	var systems;
+	var systems, chords, selected, scaleLength;
+
+	chords = [
+		// English
+		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
+		// Romance
+		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
+	];
+
+	scaleLength = 12;
+
+	function getRandomNote() {
+		var firstChord = systems.systems[selected].chordsRange[0],
+			lastChord = systems.systems[selected].chordsRange[1];
+		return chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
+	}
+
+	/**
+	 * Returns a note in a given system located on a given string on
+	 * a given fret
+	 *
+	 * @returns string|array String if the system is english/romance,
+	 * 		array if the system is all
+	 */
+	function _getChord(system, openString, fret) {
+		// The absolute chord is not system dependant, just the index
+		//	of the chord in the scale
+		// The returned value is the index of the chord in the actual
+		//	scale
+		var absoluteChord = (openString + fret) % scaleLength;
+		return systems.chords[
+			absoluteChord
+			+ systems.systems[system].chordsRange[0]
+		];
+	}
+
+	/**
+	 *
+	 */
+	function getChords(openString, fretsNumber) {
+		var returnedChords = {
+				chords: []
+			},
+			chord,
+			c;
+
+		for (c = 0; c <= fretsNumber; c++) {
+			if (selected == systems.systems.english.id || selected == systems.systems.romance.id) {
+				chord = _getChord(selected, openString, c);
+			}
+			else if (selected == systems.systems.all.id) {
+				chord = [
+					_getChord(systems.systems.english.id, openString, c),
+					_getChord(systems.systems.romance.id, openString, c)
+				];
+			}
+
+			if (c == 0) {
+				returnedChords.openString = chord.join && chord.join(' / ') || chord;
+			}
+			returnedChords.chords.push(chord);
+		}
+
+		return returnedChords;
+	}
 
 	systems = {
+		chords: chords,
+		scaleLength: scaleLength,
 		systems: {
 			english: {
 				chordsRange: [0, 11],
@@ -133,15 +204,17 @@ angular.module('bassPracticeApp', [])
 				id: 'all'
 			}
 		},
-		selected: null,
 
 		setSelected: function(s) {
-			systems.selected = s;
+			selected = s;
 		},
 
 		getSelected: function() {
-			return systems.selected;
+			return selected;
 		},
+
+		getRandomNote: getRandomNote,
+		getChords: getChords
 	};
 
 	return systems;
@@ -154,81 +227,53 @@ angular.module('bassPracticeApp', [])
  * of the tuning.
  */
 .factory('FretBoardFactory', function(SystemsFactory) {
-	var chords, fretsNumber, stringsNumber, maxStringsNumber, chordsBaseTuning, fretBoard;
+	// constants
+	var defaultVal, maxVal, chordsBaseTuning,
+		// instances attributes
+		fretsNumber, stringsNumber, tuning;
 
-	chords = [
-		// English
-		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B',
-		// Romance
-		'Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si',
-	];
+	chordsBaseTuning = [4, 9, 2, 7, 11];
 
-	chordsBaseTuning = [4, 11, 7, 2, 9, 4];
-	fretsNumber = 12;
-	stringsNumber = 4;
-	maxStringsNumber = 4;
-
-	function _getChord(tuning, fret, system) {
-		return chords[(tuning + fret) % fretsNumber + SystemsFactory.systems[system].chordsRange[0]];
-	}
-
-	function _getChords(system, tuning) {
-		var returnedChords = {},
-			chord,
-			c;
-
-		for (c = 0; c <= fretsNumber; c++) {
-			if (system == SystemsFactory.systems.english.id || system == SystemsFactory.systems.romance.id) {
-				chord = _getChord(tuning, c, system);
-			}
-			else if (system == SystemsFactory.systems.all.id) {
-				chord = [
-					_getChord(tuning, c, 'english'),
-					_getChord(tuning, c, 'romance')
-				];
-			}
-
-			if (c == 0) {
-				returnedChords.tuning = chord;
-				if (system == SystemsFactory.systems.all.id) {
-					returnedChords.tuning = returnedChords.tuning.join(' / ');
-				}
-
-				returnedChords.chords = [];
-			}
-			returnedChords.chords.push(chord);
-		}
-
-		return returnedChords;
-	}
-
-	function getRandomNote(system) {
-		var firstChord = SystemsFactory.systems[system].chordsRange[0],
-			lastChord = SystemsFactory.systems[system].chordsRange[1];
-		return chords[Math.floor(Math.random() * (lastChord - firstChord + 1)) + firstChord];
-	}
-
-	function getBoard(system) {
-		var board, chordTuning, chordTuningIndex;
-
-		board = [];
-		for (chordTuningIndex in chordsBaseTuning) {
-			chordTuning = chordsBaseTuning[chordTuningIndex];
-			board.push(_getChords(system, chordTuning));
-		}
-
-		return board;
-	}
-
-	fretBoard = {
-		chords: chords,
-		baseTuning: chordsBaseTuning,
-
-		getBoard: getBoard,
-		getRandomNote: getRandomNote
+	defaultVal = {
+		frets: 12,
+		strings: 6,
+		tuning: chordsBaseTuning[0]
+	};
+	maxVal = {
+		frets: 12,
+		strings: 6
 	};
 
-	return fretBoard;
+	function getBoard(system, tuning) {
+		var board, delta, string;
+
+		tuning = 4;
+		delta = tuning - chordsBaseTuning[0];
+		board = [];
+		for (string = 0; string < stringsNumber; string++) {
+			tuning = (chordsBaseTuning[string % chordsBaseTuning.length] + delta) % SystemsFactory.scaleLength;
+			board.push(SystemsFactory.getChords(tuning, fretsNumber));
+		}
+
+		return board.reverse();
+	}
+
+	function setFretsNumber(nbFrets) {
+		fretsNumber = Math.min(parseInt(nbFrets) || defaultVal.frets, maxVal.frets);
+	}
+
+	function setStringsNumber(nbStrings) {
+		stringsNumber = Math.min(parseInt(nbStrings) || defaultVal.strings, maxVal.strings);
+	}
+
+	return {
+		getBoard: getBoard,
+		setFretsNumber: setFretsNumber,
+		setStringsNumber: setStringsNumber,
+		getDefaults: function() {
+			return defaultVal;
+		}
+	};
 })
 /**********************************************************************/
 /** END FACTORIES                                                    **/
@@ -238,7 +283,7 @@ angular.module('bassPracticeApp', [])
 /** CONTROLLERS                                                      **/
 /**********************************************************************/
 .controller('BoardController', function(SystemsFactory, FretBoardFactory, GameEngineFactory) {
-	this.chordsTuning = FretBoardFactory.getBoard(
+	this.board = FretBoardFactory.getBoard(
 		SystemsFactory.getSelected()
 	);
 
@@ -250,7 +295,7 @@ angular.module('bassPracticeApp', [])
 
 	this.click = function(string, fret) {
 		var result = GameEngineFactory.playNote(
-			this.chordsTuning[string].chords[fret]
+			this.board[string].chords[fret]
 		);
 	};
 
@@ -292,23 +337,29 @@ angular.module('bassPracticeApp', [])
  * Directive for the menu to choose the mode and system
  */
 .directive('modeSelection', function() {
-	function ModeController(ModesFactory, SystemsFactory, GameEngineFactory) {
+	function ModeController(ModesFactory, SystemsFactory, FretBoardFactory, GameEngineFactory) {
 		this.availableModes = ModesFactory.modes.available;
 		this.availableSystems = SystemsFactory.systems;
 
-		// There may be other options later, such as tuning, number of
-		// strings...
+		var defaultValues = FretBoardFactory.getDefaults();
+
 		this.mode = {
 			mode: ModesFactory.modes.available.PRACTICE,
-			system: SystemsFactory.systems.english.id
+			system: SystemsFactory.systems.english.id,
+			turnsNumber: GameEngineFactory.getDefaultTurnsNumber(),
+			stringsNumber: defaultValues.strings,
+			fretsNumber: defaultValues.frets,
+			tuning: defaultValues.tuning
 		};
 
-		this.start = function() {
+		this.start = function(frets, strings, turns) {
 			ModesFactory.setSelected(this.mode.mode);
 			SystemsFactory.setSelected(this.mode.system);
+			FretBoardFactory.setFretsNumber(this.mode.fretsNumber);
+			FretBoardFactory.setStringsNumber(this.mode.stringsNumber);
 
 			if (this.mode.mode == ModesFactory.modes.available.PRACTICE) {
-				GameEngineFactory.start(5);
+				GameEngineFactory.start(this.mode.turnsNumber);
 			}
 		};
 	}
