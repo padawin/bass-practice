@@ -27,7 +27,7 @@ angular.module('bassPracticeApp', [])
 	}
 
 	function start(initTurns) {
-		turn = totalTurns = parseInt(initTurns) || 5;
+		turn = totalTurns = parseInt(initTurns) || getDefaultTurnsNumber();
 		results = {correct: 0, incorrect: 0};
 
 		_turn();
