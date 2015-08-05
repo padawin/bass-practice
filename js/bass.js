@@ -240,7 +240,7 @@ angular.module('bassPracticeApp', [])
 		tuning: chordsBaseTuning[0]
 	};
 	maxVal = {
-		frets: 12,
+		frets: 20,
 		strings: 6
 	};
 
